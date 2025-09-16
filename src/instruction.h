@@ -18,7 +18,12 @@ typedef enum {
     OP_STACKALLOC = 0x0b,
     OP_STACKDEALLOC  = 0x0c,
     OP_DELETE = 0x0d,
-    OP_PRINT = 0x0f
+    OP_PRINT = 0x0f,
+    OP_JUMP = 0x10,
+    OP_IF = 0x11,
+    OP_FUNCTION = 0x12,
+    OP_LABEL = 0x13,
+    OP_ENDDEF = 0x14,
     //GETGLOBAL = 0x09,
 } BytecodeInstruction;
 
