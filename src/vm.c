@@ -1,8 +1,13 @@
 #include <stdlib.h>
 #include "vm.h"
 
-void run(int **bytes) {
+void run(int *bytes) {
+    int i = 0;
+    int byte;
 
+    while ((byte = bytes[i]) != EOF) {
+
+    };
 }
 
 Stack create_stack(int size) {

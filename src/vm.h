@@ -8,13 +8,14 @@ typedef struct {
     int top;
     DataType *data;
     DataType *variableData;
+    //function stack
 } Stack;
 
-void run(int **bytes);
-void stack_push(Stack *s, DataType value);
+void run(int *bytes);
+/*void stack_push(Stack *s, DataType value);
 DataType *stack_pop(Stack *s);
 void stack_store(Stack *s, DataType value, int index);
 void stack_load(Stack *s, int index);
-Stack create_stack(int size);
+Stack create_stack(int size);*/
 
 #endif

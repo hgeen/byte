@@ -24,12 +24,15 @@ typedef enum {
     OP_FUNCTION = 0x12,
     OP_LABEL = 0x13,
     OP_ENDDEF = 0x14,
+    OP_CALL = 0x15,
+    OP_RETURN = 0x16,
     //GETGLOBAL = 0x09,
 } BytecodeInstruction;
 
-typedef struct {
-
-} Instruction;
+typedef enum {
+    FAIL = 0,
+    SUCCESS = 1,
+} EXIT_CODE;
 
 typedef enum {
     VAL_INT,
@@ -50,8 +53,23 @@ typedef struct {
     Data data;
 } DataType;
 
-int get_parameters(char **buffer, FILE *file);
+typedef struct {
+    Value returnType;
+    Value *parameters;
+} Function;
+
+typedef union {
+    DataType d;
+    Function f;
+} Object;
+
+typedef struct {
+    BytecodeInstruction instruction;
+    Object *parameters;
+} Instruction;
+
+//int get_parameters(char **buffer, FILE *file);
 Instruction *generate_instructions(FILE *file);
-int **generate_bytecode(Instruction *instructions);
+int *instruction_to_bytecode(Instruction *instructions);
 
 #endif
