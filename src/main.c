@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 
     FILE *file = fopen(argv[1], "r");
 
-    //Instruction *instructions = generate_instructions(file);
+    Instruction *instructions = generate_instructions(file);
     //int **bytes = generate_bytecode(instructions);
     //run(bytes);
 }

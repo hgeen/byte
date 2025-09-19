@@ -27,6 +27,7 @@ typedef enum {
     OP_CALL = 0x15,
     OP_RETURN = 0x16,
     //GETGLOBAL = 0x09,
+    OP_END = 0xff,
 } BytecodeInstruction;
 
 typedef enum {

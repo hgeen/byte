@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "instruction.h"
 
 #define END_OF_BUFFER (char*) -1
@@ -100,7 +101,8 @@ int get_parameters(char **buffer, FILE *file) {
 }
 
 Instruction *generate_instructions(FILE *file) {
-    Instruction *instructions = calloc(1, sizeof(Instruction));
+    int sz = 256;
+    Instruction *instructions = calloc(sz, sizeof(Instruction));
     char *token = calloc(64, sizeof(char*));
     char c = 0;
     int comments = 0;
@@ -113,6 +115,10 @@ Instruction *generate_instructions(FILE *file) {
 
             token[tok_i] = '\0';
             tok_i = 0;
+
+            if (param_i > sz) {
+                instructions = realloc(&instructions, 2 * sz);
+            }
             
             if (strcmp(token, "PUSHINT") == 0) {
                 Instruction i;
@@ -120,41 +126,94 @@ Instruction *generate_instructions(FILE *file) {
                 char **parameters;
 
                 if (get_parameters(parameters, file)) {
-                    int i = 0;
                     int n = 0;
 
-                    while (parameters[i] != END_OF_BUFFER && text_to_int(parameters[i], &n)) {
+                    text_to_int(parameters[0], &n);
 
-                    }
+                    Object o;
+                    o.d.type = VAL_INT;
+                    o.d.data.i = n;
+                    i.parameters[0] = o;
+                    instructions[param_i++] = i;
                 } else {
-                    
+                    //assert(0 == 1);
                 }
 
                 //instructions[]
             } else if (strcmp(token, "PUSHFLOAT") == 0) {
+                Instruction i;
+                i.instruction = OP_PUSHFLOAT;
+                char **parameters;
 
+                if (get_parameters(parameters, file)) {
+                    float n = 0;
+
+                    text_to_float(parameters[0], &n);
+
+                    Object o;
+                    o.d.type = VAL_FLOAT;
+                    o.d.data.f = n;
+                    i.parameters[0] = o;
+                    instructions[param_i++] = i;
+                } else {
+                    //assert(0 == 1);
+                }
             } else if (strcmp(token, "PUSHCHAR") == 0) {
+                Instruction i;
+                i.instruction = OP_PUSHCHAR;
+                char **parameters;
 
+                if (get_parameters(parameters, file)) {
+                    float n = 0;
+
+                    Object o;
+                    o.d.type = VAL_CHAR;
+                    o.d.data.c = n;
+                    i.parameters[0] = o;
+                    instructions[param_i++] = i;
+                } else {
+                    //assert(0 == 1);
+                }
             } else if (strcmp(token, "PUSHSTR") == 0) {
 
             } else if (strcmp(token, "ADD") == 0) {
-                
+                Instruction i;
+                i.instruction = OP_ADD;
             } else if (strcmp(token, "SUB") == 0) {
-
+                Instruction i;
+                i.instruction = OP_SUB;
+                instructions[param_i++] = i;
             } else if (strcmp(token, "MULT") == 0) {
-
-            } else if (strcmp(token, "MULT") == 0) {
-
+                Instruction i;
+                i.instruction = OP_MULT;
+                instructions[param_i++] = i;
+            } else if (strcmp(token, "DIV") == 0) {
+                Instruction i;
+                i.instruction = OP_DIV;
+                instructions[param_i++] = i;
             }
-
+            
             free(token);
             token = calloc(64, sizeof(char*));
         } else {
             token[tok_i++] = c;
         }
     };
+
+    Instruction end;
+    end.instruction = OP_END;
+
+    instructions[param_i] = end;
+    return instructions;
 }
 
 int *instruction_to_bytecode(Instruction *instructions) {
+    int i = 0;
+    int sz = 256;
+    int *bytecodes = calloc(sz, sizeof(int));
+    Instruction ins;
 
+    while ((ins = instructions[i++]).instruction != OP_END) {
+
+    }
 }
